@@ -45,7 +45,7 @@ The strawman you copied already provides the following template:
 from fire import Fire
 
 from mymodule.main import run_hello_world
-from lsl_recorder.utils.logging import logger
+from mymodule.utils.logging import logger
 
 from dareplane_utils.default_server.server import DefaultServer
 
@@ -58,7 +58,7 @@ def main(port: int = 8080, ip: str = "127.0.0.1", loglevel: int = 10):
     }
 
     server = DefaultServer(
-        port, ip=ip, pcommand_map=pcommand_map, name="lsl_control_server"
+        port, ip=ip, pcommand_map=pcommand_map, name="mymodule_control_server"
     )
 
     # initialize to start the socket
@@ -76,6 +76,8 @@ All functionality will be managed within the server for which the `DefaultServer
 ```python ./api/server.py
 from test_module.main import run_hello_world
 ```
+
+Also rename `mymodule` to `test_module` for the importing of the logger and the name passed to the creation of the `DefaultServer` instance.
 
 ###### Adding the functionality to the primary commands
 
@@ -112,6 +114,8 @@ Connected to mymodule_control_server
 START
 ```
 
-The default server also implements a `STOP` command to stop any thread or subprocess which the server has in its book keeping. Additionally a `CLOSE` command is implemented by default and will close the server. For integrating the module, the default server provides a `GET_PCOMMS` implementation, which will send the list of commands you specified + `STOP` and `CLOSE`. This is used within the control room module (used to compose various Dareplane modules) and allows for arbitrary command name choices. You just need to reflect them properly later, when setting up the module as part of a whole system. So better choose simple and indicative names. The is not restrictions to using all capital letters either. But given the global nature of these commands, it feels natural.
+The default server also implements a `STOP` command to stop any thread or subprocess which the server has in its book keeping. Additionally a `CLOSE` command is implemented by default and will close the server. For integrating the module, the default server provides a `GET_PCOMMS` implementation, which will send the list of commands you specified + `STOP` and `CLOSE`. This is used within the control_room module (used to compose various Dareplane modules) and allows for arbitrary command name choices. You just need to reflect them properly later, when setting up the module as part of a whole system. So better choose simple and indicative names. The is not restrictions to using all capital letters either. But given the global nature of these commands, it feels natural.
 
 Note that the communication via primary commands allows to send arbitrary json payloads. So sending `START|{"some": "json"}` would result in a function call of the form `run_hello_world(**{"some": "json"})`.
+
+**Congratulations** you have now a working module which can be controlled from within the control_room module and can be composed within a system of modules.
