@@ -95,7 +95,7 @@ This means the interpretation of a single string with a function or method call.
 
 Note: You want to link the function and not a function call (no `run_hello_world()`).
 
-**Important**: Currently any function or method hooked up needs to return either an `int`, a `threading.Thread` or a `subprocess.Popen` subprocess. The server will then manage the life time of there potentially spawned threads or subprocesses.
+**Important**: Currently any function or method hooked up needs to return either an `int`, a `threading.Thread` or a `subprocess.Popen` subprocess. The server will then manage the life time of spawned threads or subprocesses.
 
 Now the server is ready for testing. Spawn the server manually using:
 
@@ -114,7 +114,7 @@ Connected to mymodule_control_server
 START
 ```
 
-The default server also implements a `STOP` command to stop any thread or subprocess which the server has in its book keeping. Additionally a `CLOSE` command is implemented by default and will close the server. For integrating the module, the default server provides a `GET_PCOMMS` implementation, which will send the list of commands you specified + `STOP` and `CLOSE`. This is used within the control_room module (used to compose various Dareplane modules) and allows for arbitrary command name choices. You just need to reflect them properly later, when setting up the module as part of a whole system. So better choose simple and indicative names. The is not restrictions to using all capital letters either. But given the global nature of these commands, it feels natural.
+The default server also implements a `STOP` command to stop any thread or subprocess which the server has in its book keeping. Additionally, a `CLOSE` command is implemented by default and will close the server. For integrating the module, the default server provides a `GET_PCOMMS` implementation, which will send the list of commands you specified + `STOP` and `CLOSE`. This is used within the control_room module (used to compose various Dareplane modules) and allows for arbitrary command name choices. You just need to reflect them properly later, when setting up the module as part of a whole system. So better choose simple and indicative names. There is not restrictions to using all capital letters either. But given the global nature of these commands, it feels natural.
 
 Note that the communication via primary commands allows to send arbitrary json payloads. So sending `START|{"some": "json"}` would result in a function call of the form `run_hello_world(**{"some": "json"})`.
 
