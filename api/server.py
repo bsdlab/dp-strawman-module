@@ -19,6 +19,11 @@ def main(port: int = 8080, ip: str = "127.0.0.1", loglevel: int = 10):
 
     # initialize to start the socket
     server.init_server()
+    
+    logger.info(
+        f"Server intialized, starting to listen for connections on: {ip=}, {port=}"
+    )
+
     # start processing of the server
     server.start_listening()
 
